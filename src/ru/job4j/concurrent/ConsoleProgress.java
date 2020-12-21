@@ -23,8 +23,9 @@ public class ConsoleProgress implements Runnable {
                 Thread.currentThread().interrupt();
                 System.out.println("\nLoading is interrupted!");
             }
-            if (i == 6)
+            if (i == 6) {
                 i = 0;
+            }
         }
     }
 }
