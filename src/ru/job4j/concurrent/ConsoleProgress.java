@@ -11,6 +11,7 @@ public class ConsoleProgress implements Runnable {
         }
         progress.interrupt();
     }
+
     @Override
     public void run() {
         String[] process = {"_", "_\\", "_\\|", "_\\|/", "_\\|/_", ""};

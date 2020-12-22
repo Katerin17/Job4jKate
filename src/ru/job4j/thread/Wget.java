@@ -25,9 +25,11 @@ public class Wget implements Runnable {
             while (true) {
                 int start = LocalTime.now().get(ChronoField.MILLI_OF_DAY);
                 byteReads = buff.read(arr, 0, 1024);
-                if (byteReads != -1)
+                if (byteReads != -1) {
                     fos.write(arr, 0, byteReads);
-                else break;
+                } else {
+                    break;
+                }
                 int finish = LocalTime.now().get(ChronoField.MILLI_OF_DAY);
                 Thread.sleep(speed - (finish - start));
                 System.out.println("1");
