@@ -20,6 +20,8 @@ public class UserCache {
     }
 
     public List<User> findAll() {
-        return users.values().stream().map(a -> User.of(a.getName())).collect(Collectors.toList());
+        return users.values().stream()
+                .map(a -> User.of(a.getName()))
+                .collect(Collectors.toList());
     }
 }
