@@ -1,8 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.util.List;
+import java.util.function.Predicate;
 
 public class ParseFile {
     private File file;
@@ -15,31 +14,34 @@ public class ParseFile {
         return file;
     }
 
-    public synchronized String getContent() throws IOException {
-        List<String> list = Files.readAllLines(file.toPath());
-        StringBuilder output = new StringBuilder();
-        for (String s : list) {
-            output.append(s);
-        }
-        return output.toString();
-    }
-
-    public synchronized String getContentWithoutUnicode() throws IOException {
-        InputStream i = new FileInputStream(file);
-        StringBuilder output = new StringBuilder();
-        int data;
-        while ((data = i.read()) != -1) {
-            if (data < 0x80) {
-                output.append(data);
+    public synchronized String getContent(Predicate<Integer> cond) throws IOException {
+        try (FileReader fr = new FileReader(file)) {
+            StringBuilder output = new StringBuilder();
+            int data;
+            while (fr.ready()) {
+                data = fr.read();
+                if (cond.test(data)) {
+                    output.append((char) data);
+                }
             }
+            return output.toString();
         }
-        return output.toString();
     }
 
     public synchronized void saveContent(String content) {
         try (FileWriter o = new FileWriter(file)) {
             o.write(content);
             o.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        ParseFile pf = new ParseFile();
+        pf.setFile(new File("/Users/user/Desktop/test.txt"));
+        try {
+            System.out.println(pf.getContent(i -> i < 0x80));
         } catch (IOException e) {
             e.printStackTrace();
         }
