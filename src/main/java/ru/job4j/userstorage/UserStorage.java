@@ -8,11 +8,11 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
 
-    private final Map<Integer, Integer> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     public synchronized boolean add(User user) {
         if (!users.containsKey(user.getId())) {
-            users.put(user.getId(), user.getAmount());
+            users.put(user.getId(), user);
             return true;
         }
         return false;
@@ -20,21 +20,25 @@ public class UserStorage {
 
     public synchronized boolean update(User user) {
         if (users.containsKey(user.getId())) {
-            users.put(user.getId(), user.getAmount());
+            users.put(user.getId(), user);
             return true;
         }
         return false;
     }
 
     public synchronized boolean delete(User user) {
-        return users.remove(user.getId(), user.getAmount());
+        return users.remove(user.getId(), user);
     }
 
     public synchronized void transfer(int fromId, int toId, int amount) {
         if (users.containsKey(fromId) && users.containsKey(toId)) {
-            if (users.get(fromId) >= amount) {
-                users.merge(fromId, amount, (oldVal, newVal) -> oldVal - newVal);
-                users.merge(toId, amount, Integer::sum);
+            User from = users.get(fromId);
+            User to = users.get(toId);
+            if (from.getAmount() >= amount) {
+                from.setAmount(from.getAmount() - amount);
+                update(from);
+                to.setAmount(to.getAmount() + amount);
+                update(to);
             }
         }
     }
@@ -44,8 +48,13 @@ public class UserStorage {
 
         stoge.add(new User(1, 100));
         stoge.add(new User(2, 200));
-
+        for (Map.Entry<Integer, User> e: stoge.users.entrySet()) {
+            System.out.println(e.getKey() + " = " + e.getValue() + " " + e.getValue().getAmount());
+        }
         stoge.transfer(1, 2, 50);
-        System.out.println(stoge.users.toString());
+        for (Map.Entry<Integer, User> e: stoge.users.entrySet()) {
+            System.out.println(e.getKey() + " = " + e.getValue() + " " + e.getValue().getAmount());
+        }
+
     }
 }

@@ -1,10 +1,7 @@
 package ru.job4j.userstorage;
 
-import net.jcip.annotations.GuardedBy;
-
 public class User {
     private final int id;
-    @GuardedBy("this")
     private int amount;
 
     public User(int id, int amount) {
@@ -16,7 +13,11 @@ public class User {
         return id;
     }
 
-    public synchronized int getAmount() {
+    public int getAmount() {
         return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }
