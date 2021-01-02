@@ -31,14 +31,12 @@ public class UserStorage {
     }
 
     public synchronized void transfer(int fromId, int toId, int amount) {
-        if (users.containsKey(fromId) && users.containsKey(toId)) {
             User from = users.get(fromId);
             User to = users.get(toId);
-            if (from.getAmount() >= amount) {
+            if (from != null && to != null) {
+                if (from.getAmount() >= amount) {
                 from.setAmount(from.getAmount() - amount);
-                update(from);
                 to.setAmount(to.getAmount() + amount);
-                update(to);
             }
         }
     }
