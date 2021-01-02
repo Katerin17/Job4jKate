@@ -17,8 +17,8 @@ public class SimpleBlockingQueue<T> {
         this.size = size;
     }
 
-    public synchronized Queue<T> getQueue() {
-        return queue;
+    public synchronized int getQueueSize() {
+        return queue.size();
     }
 
     public void offer(T value) {

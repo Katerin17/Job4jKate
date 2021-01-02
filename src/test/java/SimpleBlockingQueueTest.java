@@ -21,7 +21,7 @@ public class SimpleBlockingQueueTest {
         second.start();
         first.join();
         second.join();
-        assertEquals(sbq.getQueue().size(), 0);
+        assertEquals(sbq.getQueueSize(), 0);
 
     }
 }
