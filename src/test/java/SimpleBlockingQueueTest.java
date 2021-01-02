@@ -14,7 +14,11 @@ public class SimpleBlockingQueueTest {
         });
         Thread second = new Thread(() -> {
             for (int i = 0; i < 20; i++) {
-                sbq.poll();
+                try {
+                    sbq.poll();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         first.start();

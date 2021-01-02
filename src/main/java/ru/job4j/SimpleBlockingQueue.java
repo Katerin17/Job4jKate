@@ -35,15 +35,11 @@ public class SimpleBlockingQueue<T> {
         }
     }
 
-    public T poll() {
+    public T poll() throws InterruptedException {
         T element;
         synchronized (this) {
             while (queue.size() == 0) {
-                try {
                     this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
             element = queue.poll();
             this.notify();
