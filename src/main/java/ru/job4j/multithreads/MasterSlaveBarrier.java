@@ -7,6 +7,7 @@ public class MasterSlaveBarrier {
         if (!available) {
             try {
                 wait();
+                System.out.println(Thread.currentThread().getName() + " is in waiting state.");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -17,6 +18,7 @@ public class MasterSlaveBarrier {
         if (available) {
             try {
                 wait();
+                System.out.println(Thread.currentThread().getName() + " is in waiting state.");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
