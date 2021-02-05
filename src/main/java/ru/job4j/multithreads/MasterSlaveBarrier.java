@@ -26,10 +26,12 @@ public class MasterSlaveBarrier {
     public synchronized void doneMaster() {
         available = false;
         notifyAll();
+        System.out.println(Thread.currentThread().getName() + " is in runnable state.");
     }
 
     public synchronized void doneSlave() {
         available = true;
         notifyAll();
+        System.out.println(Thread.currentThread().getName() + " is in runnable state.");
     }
 }
